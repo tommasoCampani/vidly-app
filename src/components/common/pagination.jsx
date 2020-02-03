@@ -9,6 +9,7 @@ const Pagination = ({ totalRows, currentPage, pageSize, onPageChange }) => {
     for (let index = 1; index < totalPages + 1; index++) {
       pages.push(index);
     }
+
     return pages;
   };
 

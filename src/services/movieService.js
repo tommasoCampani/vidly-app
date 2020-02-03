@@ -14,7 +14,7 @@ function insertMovie(movie) {
 function updateMovie(movie) {
   const body = { ...movie };
   delete body._id;
-  httpService.put(getMovieUrl(movie._id), body);
+  return httpService.put(getMovieUrl(movie._id), body);
 }
 
 export function getMovies() {
