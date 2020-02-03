@@ -5,8 +5,8 @@ import ListGroup from "./common/listGroup";
 import SearchBox from "./common/searchBox";
 import { Link } from "react-router-dom";
 import { paginate } from "../utils/pagination";
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getMovies, deleteMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
@@ -32,18 +32,35 @@ class Film extends Component {
     search: ""
   };
 
-  componentDidMount = () => {
-    this.setState({ movies: getMovies(), genres: getGenres() });
-    toast("Welcome to vidly", { position: "top-center" });
-    toast.error("Error message");
-    toast.info("Info message");
-    toast.warn("Warning message");
-    toast.success("Success message");
+  componentDidMount = async () => {
+    try {
+      const { data: genresData } = await getGenres();
+      const genres = [{ _id: 0, name: "Tutti" }, ...genresData];
+
+      const { data: movies } = await getMovies();
+
+      this.setState({ movies, genres });
+
+      //toast("Welcome to vidly!", { position: "bottom-center" });
+    } catch (error) {}
   };
 
-  handleDeleteFilm = movie => {
-    let films = this.state.movies.filter(m => m._id !== movie._id);
-    this.setState({ movies: films });
+  handleDeleteFilm = async movie => {
+    const originalMovies = this.state.movies;
+
+    const movies = originalMovies.filter(m => m._id !== movie._id);
+    this.setState({ movies });
+
+    try {
+      await deleteMovie(movie._id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        toast.error(
+          "The selected film is already been deleted. Please refresh page."
+        );
+
+      this.setState({ movies: originalMovies });
+    }
   };
 
   handleLikeClick = movie => {
@@ -114,7 +131,6 @@ class Film extends Component {
   };
 
   render() {
-    const { length: filmsCount } = this.state.movies;
     const {
       currentPage,
       currentGenre,
@@ -123,8 +139,6 @@ class Film extends Component {
       genres: allGenres,
       search
     } = this.state;
-
-    if (filmsCount <= 0) return <h4>Non ci sono films nel database!</h4>;
 
     //Filter, sort and paginate data
     const { resultsCount, results: movies } = this.paginateData();

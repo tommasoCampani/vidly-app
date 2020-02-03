@@ -8,10 +8,9 @@ const ListGroup = ({
   selectedItem,
   onItemSelect
 }) => {
-  const allItems = [{ _id: 0, name: "Tutti" }, ...items];
   return (
     <ul className="list-group">
-      {allItems.map(item => (
+      {items.map(item => (
         <li
           key={"li_" + item[valueProperty]}
           style={{ cursor: "pointer" }}

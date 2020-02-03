@@ -1,8 +1,9 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getMovie, saveMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
+import { toast } from "react-toastify";
 
 class FilmForm extends Form {
   state = {
@@ -16,18 +17,28 @@ class FilmForm extends Form {
     genres: []
   };
 
-  componentDidMount = () => {
+  async populateGenres() {
+    try {
+      const { data: genres } = await getGenres();
+      this.setState({ genres });
+    } catch (ex) {}
+  }
+
+  async populateMovies() {
     const { match, history } = this.props;
+    try {
+      if (match.params.id === "new") return;
+      const { data: movie } = await getMovie(match.params.id);
+      this.setState({ data: this.mapToViewModel(movie) });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        return history.replace("/not-foud");
+    }
+  }
 
-    const genres = getGenres();
-    this.setState({ genres });
-
-    if (match.params.id === "new") return;
-
-    const movie = getMovie(match.params.id);
-    if (!movie) return history.replace("/not-foud");
-
-    this.setState({ data: this.mapToViewModel(movie) });
+  componentDidMount = async () => {
+    await this.populateGenres();
+    await this.populateMovies();
   };
 
   constructor(props) {
@@ -37,7 +48,9 @@ class FilmForm extends Form {
 
   schema = {
     _id: [Joi.string().optional(), Joi.allow(null)],
-    title: Joi.string().required(),
+    title: Joi.string()
+      .required()
+      .min(5),
     genreId: Joi.string().required(),
     numberInStock: Joi.number()
       .required()
@@ -60,10 +73,14 @@ class FilmForm extends Form {
     };
   };
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     super.handleSubmit(e);
-    saveMovie(this.state.data);
-    this.props.history.replace("/");
+    try {
+      await saveMovie(this.state.data);
+      this.props.history.replace("/");
+    } catch (ex) {
+      toast.error("Errore: " + ex.message);
+    }
   }
 
   render() {

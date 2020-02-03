@@ -1,5 +1,5 @@
 import axios from "axios";
-import logger from "./logService";
+import logger from "./loggerService";
 import { toast } from "react-toastify";
 
 //Global management of unexpected error
