@@ -17,17 +17,24 @@ class FilmForm extends Form {
     genres: []
   };
 
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   async populateGenres() {
     try {
       const { data: genres } = await getGenres();
-      this.setState({ genres });
-    } catch (ex) {}
+      const validGenres = genres.filter(genre => genre._id !== 0);
+      this.setState({ genres: validGenres });
+    } catch (ex) {} //axios interceptor
   }
 
   async populateMovies() {
     const { match, history } = this.props;
     try {
       if (match.params.id === "new") return;
+
       const { data: movie } = await getMovie(match.params.id);
       this.setState({ data: this.mapToViewModel(movie) });
     } catch (ex) {
@@ -40,11 +47,6 @@ class FilmForm extends Form {
     await this.populateGenres();
     await this.populateMovies();
   };
-
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
 
   schema = {
     _id: [Joi.string().optional(), Joi.allow(null)],

@@ -10,7 +10,6 @@ const Select = ({
   textProperty,
   ...rest
 }) => {
-  const allItems = [{ _id: 0, name: "" }, ...items];
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
@@ -21,7 +20,7 @@ const Select = ({
         {...rest}
         className="custom-select"
       >
-        {allItems.map(item => (
+        {items.map(item => (
           <option key={item[valueProperty]} value={item[valueProperty]}>
             {item[textProperty]}
           </option>
