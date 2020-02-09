@@ -90,10 +90,10 @@ class FilmForm extends Form {
     const { match } = this.props;
     return (
       <div className="container">
-        {match.params.id ? (
-          <h1>Film id: {match.params.id}</h1>
+        {match.params.id !== "new" ? (
+          <h5>Film id: {match.params.id}</h5>
         ) : (
-          <h1>New Film</h1>
+          <h5>New Film</h5>
         )}
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title", true, "text")}

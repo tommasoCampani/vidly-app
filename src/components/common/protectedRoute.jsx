@@ -2,7 +2,11 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import auth from "../../services/authService";
 
-const ProtectedRoute = ({ component: Component, render, ...rest }) => {
+const ProtectedRoute = ({
+  component: Component,
+  render: customRender,
+  ...rest
+}) => {
   return (
     <Route
       {...rest}
@@ -16,7 +20,7 @@ const ProtectedRoute = ({ component: Component, render, ...rest }) => {
               }}
             />
           );
-        return Component ? <Component {...props} /> : render(props);
+        return Component ? <Component {...props} /> : customRender(props);
       }}
     />
   );
