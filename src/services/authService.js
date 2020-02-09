@@ -5,6 +5,8 @@ import config from "../config/config.json";
 const tokenKey = "token";
 const apiEndPoint = `${config.apiEndPoint}/auth`;
 
+httpService.setTokenHeader(getJwt());
+
 const login = async (email, password) => {
   const { data: jwt } = await httpService.post(apiEndPoint, {
     email,
@@ -31,4 +33,27 @@ const getLoggedUser = () => {
   }
 };
 
-export default { login, logout, getLoggedUser, loginWithJwt };
+export function getJwt() {
+  return localStorage.getItem(tokenKey);
+}
+
+var auth = {
+  login,
+  logout,
+  loginWithJwt,
+  getJwt,
+
+  get loggedUser() {
+    return getLoggedUser();
+  }
+};
+
+/*
+Object.defineProperty(auth, "loggedUser", {
+  get: function() {
+    return getLoggedUser();
+  }
+});
+*/
+
+export default auth;

@@ -25,8 +25,8 @@ class FilmForm extends Form {
   async populateGenres() {
     try {
       const { data: genres } = await getGenres();
-      const validGenres = genres.filter(genre => genre._id !== 0);
-      this.setState({ genres: validGenres });
+      const allGenres = [{ _id: 0, name: "" }, ...genres];
+      this.setState({ genres: allGenres });
     } catch (ex) {} //axios interceptor
   }
 
@@ -81,7 +81,8 @@ class FilmForm extends Form {
       await saveMovie(this.state.data);
       this.props.history.replace("/");
     } catch (ex) {
-      toast.error("Errore: " + ex.message);
+      if (ex.response && ex.response.status === 400)
+        return toast.error(ex.response.data);
     }
   }
 

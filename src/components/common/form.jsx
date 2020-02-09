@@ -9,6 +9,11 @@ class Form extends Component {
     errors: {}
   };
 
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   validate = () => {
     const { data } = this.state;
     const options = { abortEarly: false };
@@ -41,17 +46,14 @@ class Form extends Component {
     return error ? error.details[0].message : null;
   };
 
-  handleSubmit2 = e => {
+  /*handleSubmit = e => {
     e.preventDefault();
 
     //Validation
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;
-
-    //if no validation error -> do Submit
-    //this.doSubmit();
-  };
+  };*/
 
   handleSubmit(e) {
     e.preventDefault();

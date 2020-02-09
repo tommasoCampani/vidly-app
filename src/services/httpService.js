@@ -2,6 +2,11 @@ import axios from "axios";
 import logger from "./loggerService";
 import { toast } from "react-toastify";
 
+//Global set of common header for all request
+function setTokenHeader(token) {
+  axios.defaults.headers.common["x-auth-token"] = token;
+}
+
 //Global management of unexpected error
 axios.interceptors.response.use(null, error => {
   const expectedError =
@@ -21,5 +26,6 @@ export default {
   get: axios.get,
   post: axios.post,
   put: axios.put,
-  delete: axios.delete
+  delete: axios.delete,
+  setTokenHeader
 };

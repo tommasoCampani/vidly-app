@@ -55,9 +55,9 @@ class Film extends Component {
       await deleteMovie(movie._id);
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
-        toast.error(
-          "The selected film is already been deleted. Please refresh page."
-        );
+        toast.error("Film is already been deleted. Please refresh page.");
+      else if (ex.response && ex.response.status === 403)
+        toast.error(ex.response.data);
 
       this.setState({ movies: originalMovies });
     }
@@ -154,13 +154,15 @@ class Film extends Component {
             />
           </div>
           <div className="col">
-            <Link
-              style={{ marginBottom: 20 }}
-              className="btn btn-primary"
-              to="/movies/new"
-            >
-              New Film
-            </Link>
+            {this.props.user && (
+              <Link
+                style={{ marginBottom: 20 }}
+                className="btn btn-primary"
+                to="/movies/new"
+              >
+                New Film
+              </Link>
+            )}
             <h6 style={{ marginBottom: 15 }}>
               Visualizzando {resultsCount} films in lista
             </h6>

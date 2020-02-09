@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import auth from "./services/authService";
 import NavBar from "./components/navbar";
 import Film from "./components/film";
@@ -18,8 +18,10 @@ class App extends Component {
   state = { user: "" };
 
   componentDidMount() {
-    const user = auth.getLoggedUser();
+    const user = auth.loggedUser;
     this.setState({ user });
+    if (user)
+      toast(`Welcome to Vidly ${user.name}`, { position: "bottom-center" });
   }
 
   render() {
@@ -33,7 +35,10 @@ class App extends Component {
             <Route path="/logout" component={Logout}></Route>
             <Route path="/register" component={RegisterForm}></Route>
             <Route path="/movies/:id" component={FilmForm}></Route>
-            <Route path="/movies" component={Film}></Route>
+            <Route
+              path="/movies"
+              render={props => <Film {...props} user={this.state.user} />}
+            ></Route>
             <Route path="/customers" component={Customers}></Route>
             <Route path="/rentals" component={Rentals}></Route>
             <Route path="/not-found" component={NotFound}></Route>
