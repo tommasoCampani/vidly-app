@@ -39,7 +39,7 @@ class FilmForm extends Form {
       this.setState({ data: this.mapToViewModel(movie) });
     } catch (ex) {
       if (ex.response && ex.response.status === 404)
-        return history.replace("/not-foud");
+        return history.replace("/not-found");
     }
   }
 
@@ -75,7 +75,7 @@ class FilmForm extends Form {
     };
   };
 
-  async handleSubmit(e) {
+  handleSubmit = async e => {
     super.handleSubmit(e);
     try {
       await saveMovie(this.state.data);
@@ -84,7 +84,7 @@ class FilmForm extends Form {
       if (ex.response && ex.response.status === 400)
         return toast.error(ex.response.data);
     }
-  }
+  };
 
   render() {
     const { match } = this.props;

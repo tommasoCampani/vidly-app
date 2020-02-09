@@ -46,15 +46,6 @@ class Form extends Component {
     return error ? error.details[0].message : null;
   };
 
-  /*handleSubmit = e => {
-    e.preventDefault();
-
-    //Validation
-    const errors = this.validate();
-    this.setState({ errors: errors || {} });
-    if (errors) return;
-  };*/
-
   handleSubmit(e) {
     e.preventDefault();
 
@@ -63,6 +54,17 @@ class Form extends Component {
     this.setState({ errors: errors || {} });
     if (errors) return;
   }
+
+  //Example: this is a class attribute assigned to a function. Not a function.
+  //handleSubmit2 is reached with 'this' in son class and not with 'super'.
+  /*handleSubmit2 = e => {
+    e.preventDefault();
+
+    //Validation
+    const errors = this.validate();
+    this.setState({ errors: errors || {} });
+    if (errors) return;
+  };*/
 
   handleOnChange = ({ currentTarget: input }) => {
     const { data: statedata, errors: stateErrors } = this.state;

@@ -38,8 +38,6 @@ class RegisterForm extends Form {
 
   async handleSubmit(e) {
     super.handleSubmit(e);
-    //if no validation error -> do Submit
-
     try {
       const response = await registerUser(this.state.data);
       auth.loginWithJwt(response.headers["x-auth-token"]);

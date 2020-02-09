@@ -11,33 +11,31 @@ import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
 import RegisterForm from "./components/registerForm";
 import NotFound from "./components/notFound";
+import ProtectedRoute from "./components/common/protectedRoute";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
-  state = { user: "" };
-
   componentDidMount() {
-    const user = auth.loggedUser;
-    this.setState({ user });
-    if (user)
-      toast(`Welcome to Vidly ${user.name}`, { position: "bottom-center" });
+    if (auth.loggedUser)
+      toast(`Welcome to Vidly ${auth.loggedUser.name}`, {
+        position: "bottom-center"
+      });
   }
-
   render() {
     return (
       <React.Fragment>
-        <NavBar user={this.state.user} />
+        <NavBar user={auth.loggedUser} />
         <ToastContainer></ToastContainer>
         <main className="container">
           <Switch>
             <Route path="/login" component={LoginForm}></Route>
             <Route path="/logout" component={Logout}></Route>
             <Route path="/register" component={RegisterForm}></Route>
-            <Route path="/movies/:id" component={FilmForm}></Route>
+            <ProtectedRoute path="/movies/:id" component={FilmForm} />
             <Route
               path="/movies"
-              render={props => <Film {...props} user={this.state.user} />}
+              render={props => <Film {...props} user={auth.loggedUser} />}
             ></Route>
             <Route path="/customers" component={Customers}></Route>
             <Route path="/rentals" component={Rentals}></Route>

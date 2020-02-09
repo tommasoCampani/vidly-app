@@ -46,8 +46,9 @@ class FilmsTable extends Component {
 
   constructor() {
     super();
-    const user = auth.loggedUser;
-    if (user && user.isAdmin) this.columns.push(this.deleteColumn);
+    const currentUser = auth.loggedUser;
+    if (currentUser && currentUser.isAdmin)
+      this.columns.push(this.deleteColumn);
   }
 
   render() {

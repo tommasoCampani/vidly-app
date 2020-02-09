@@ -11,17 +11,6 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 
 class Film extends Component {
-  getSortCol = () => {
-    const sortTitle = sessionStorage.getItem("sortTitle")
-      ? sessionStorage.getItem("sortTitle")
-      : "title";
-    const sortOrder = sessionStorage.getItem("sortOrder")
-      ? sessionStorage.getItem("sortOrder")
-      : "asc";
-
-    return { path: sortTitle, order: sortOrder };
-  };
-
   state = {
     movies: [],
     genres: [],
@@ -40,10 +29,19 @@ class Film extends Component {
       const { data: movies } = await getMovies();
 
       this.setState({ movies, genres });
-
-      //toast("Welcome to vidly!", { position: "bottom-center" });
     } catch (error) {}
   };
+
+  getSortCol() {
+    const sortTitle = sessionStorage.getItem("sortTitle")
+      ? sessionStorage.getItem("sortTitle")
+      : "title";
+    const sortOrder = sessionStorage.getItem("sortOrder")
+      ? sessionStorage.getItem("sortOrder")
+      : "asc";
+
+    return { path: sortTitle, order: sortOrder };
+  }
 
   handleDeleteFilm = async movie => {
     const originalMovies = this.state.movies;
