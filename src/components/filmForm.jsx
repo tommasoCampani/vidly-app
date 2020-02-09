@@ -30,7 +30,7 @@ class FilmForm extends Form {
     } catch (ex) {} //axios interceptor
   }
 
-  async populateMovies() {
+  async populateMovie() {
     const { match, history } = this.props;
     try {
       if (match.params.id === "new") return;
@@ -44,8 +44,8 @@ class FilmForm extends Form {
   }
 
   componentDidMount = async () => {
+    await this.populateMovie();
     await this.populateGenres();
-    await this.populateMovies();
   };
 
   schema = {
