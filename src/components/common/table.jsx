@@ -11,7 +11,7 @@ const Table = ({
   onSort
 }) => {
   return (
-    <table className="table">
+    <table className="table table-condensed">
       <TableHeader
         columns={columns}
         sortColumn={sortColumn}

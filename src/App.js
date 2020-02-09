@@ -12,6 +12,7 @@ import Logout from "./components/logout";
 import RegisterForm from "./components/registerForm";
 import NotFound from "./components/notFound";
 import ProtectedRoute from "./components/common/protectedRoute";
+import Footer from "./components/footer";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -35,10 +36,7 @@ class App extends Component {
             <Route path="/login" component={LoginForm}></Route>
             <Route path="/logout" component={Logout}></Route>
             <Route path="/register" component={RegisterForm}></Route>
-            <ProtectedRoute
-              path="/movies/:id"
-              render={props => <FilmForm {...props} user={user} />}
-            />
+            <ProtectedRoute path="/movies/:id" component={FilmForm} />} />
             <Route
               path="/movies"
               render={props => <Film {...props} user={user} />}
@@ -50,6 +48,7 @@ class App extends Component {
             <Redirect to="/not-found"></Redirect>
           </Switch>
         </main>
+        <Footer year={new Date().getFullYear()}></Footer>
       </React.Fragment>
     );
   }

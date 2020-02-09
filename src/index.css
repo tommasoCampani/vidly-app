@@ -5,10 +5,34 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+.wall {
+  background-image: url(/wall.jpg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
 }
 
 .navbar {
   margin-bottom: 30px;
+}
+
+.table {
+  background: white;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  color: darkslategray;
+  text-align: center;
+  font-size: 14px;
 }
 
 code {
