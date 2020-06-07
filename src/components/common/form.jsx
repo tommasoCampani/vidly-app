@@ -19,8 +19,6 @@ class Form extends Component {
     const options = { abortEarly: false };
 
     //Validation
-    /* TEST var result = Joi.validate(data, this.schema, options);
-    console.log(result);*/
     const { error } = Joi.validate(data, this.schema, options);
     if (!error) return null;
 
@@ -115,8 +113,6 @@ class Form extends Component {
       ></Input>
     );
   };
-
-  //Props: name, label,title,items,textProperty,valueProperty,selectedItem,errors,onChange
 
   renderSelect = (name, label, items) => {
     const { data, errors } = this.state;
